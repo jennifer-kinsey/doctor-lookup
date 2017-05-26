@@ -12,29 +12,55 @@ Doctor.prototype.getAllSymptoms = function(displaySymptom){
       displaySymptom(datum.name);
     });
   }).fail(function(error) {
-    $('#symptoms-form').append("<p>An Error has occurred.</p>");
+    $('#no-result').append("An Error has occurred.");
   });
 };
 
+Doctor.prototype.getDocs = function(){
+  $.get('https://api.betterdoctor.com/2016-03-01/conditions?user_key=' + apiKey).then(function(response) {
+    response.data.forEach(function(datum){
+      displaySymptom(datum.name);
+    });
+  }).fail(function(error) {
+    $('#symptoms-form').append("<p>An Error has occurred.</p>");
+  });
+};
 
 exports.doctorsModule = Doctor;
 
 },{"./../.env":1}],3:[function(require,module,exports){
 var Doctor =  require('./../js/doctor-lookup.js').doctorsModule;
 
-var makeRow = function() {
-  $('#table-body').append(`<tr></tr>`);
-};
-
 var displaySymptom = function(symptom){
-  $('#symptoms-form').append(
-    `<input type="checkbox" name="${symptom}" value="${symptom}">${symptom}<br>`);
+  $('#symptoms-form').prepend(
+    `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
 
 $(document).ready(function() {
   var doctor = new Doctor();
   doctor.getAllSymptoms(displaySymptom);
+
+  $('#submit-button').click(function() {
+    $('form').hide();
+    $('#reset-button').show();
+    var yourSymptom = $('input[name=symptom]:checked').val();
+    console.log(yourSymptom)
+    if (!yourSymptom){
+      $('#result').text("You didn't select anything. Have another go.");
+    }
+
+    // currentWeatherObject.getHumidity(city, displayHumidity);
+    // currentWeatherObject.getDescription(city, displayDescription);
+    // currentWeatherObject.getTemperatures(city, displayTemperatures);
+    // currentWeatherObject.getSunrise(city, displaySunrise);
+    // currentWeatherObject.getSunset(city, displaySunset);
+  });
+
+  $('#reset-button').click(function() {
+    location.reload();
+  });
+
 });
 
 },{"./../js/doctor-lookup.js":2}]},{},[3]);

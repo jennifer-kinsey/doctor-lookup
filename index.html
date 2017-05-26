@@ -13,9 +13,15 @@
       <div class="jumbotron">
         <h1>Doctor Finder</h1>
       </div>
-      <h2>Select your Symptoms</h2>
-      <form id="symptoms-form">
+      <form id="form">
+        <h2>Select your Symptoms</h2>
+        <div class="radio" id="symptoms-form"></div><br>
+        <button type="button" id="submit-button" class="btn btn-success">Submit</button>
       </form>
+      <div id="result">
+        <h4 id="no-result"></h4>
+      </div>
+      <button type="button" id="reset-button" class="btn btn-primary">Query Again</button>
     </div>
   </body>
 </html>
