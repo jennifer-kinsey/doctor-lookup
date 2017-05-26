@@ -5,12 +5,17 @@ var displaySymptom = function(symptom){
     `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
-var makeRow() = function(){
-  $('$result').append(`<div class="row"><div class="doc-info"></div></div>`)
-}
+var makeRow = function(){
+  $('$result').append(`<div class="row"><div class="doc-info"></div></div>`);
+};
 
-var displayDocs = function(slug){
-  $('.doc-info').last().append(`<h4>${slug} slug </h4>`);
+var displayDocs = function(results){
+  results.forEach(function(result){
+    $('.doc-info').last().append(
+      `<h2>${result.practices[0].name}</h2>
+      <div class="row"><div class="doc-info"></div></div>`
+    );
+  })
 };
 
 

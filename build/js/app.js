@@ -21,10 +21,15 @@ Doctor.prototype.getAllSymptoms = function(displaySymptom){
 Doctor.prototype.getDocs = function(symptom, displayDocs){
   $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${symptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=20&user_key=${apiKey}`)
     .then(function(response) {
+      // response.data.forEach(function(datum){
+      //   makeRow();
+      //   displayDocs(datum.name);
+      // });
       displayDocs(response.data);
+      console.log(response.data);
     })
     .fail(function(error) {
-      $('#symptoms-form').append("<p>An Error has occurred.</p>");
+      $('#symptoms-form').append("No results found.");
     });
 };
 
@@ -38,15 +43,31 @@ var displaySymptom = function(symptom){
     `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
-// var displayResultNum = function(num){
-//   $('#result').append(`<h4>${num} results </h4>`);
-// };
+var makeRow = function(){
+  $('$result').append(`<div class="row"><div class="doc-info"></div></div>`);
+};
 
-var displayDocs = function(slug){
-  $('#result').append(`<h4>${slug} slug </h4>`);
+var displayDocs = function(results){
+  results.forEach(function(result){
+    $('.doc-info').last().append(
+      `<h2>${result.practices[0].name}</h2>
+      <div class="row"><div class="doc-info"></div></div>`
+    );
+  })
 };
 
 
+// <div class="row"> DONE
+//   <div class="doc-info"> DONE
+//     <h2 class="practice"></h2>
+//     <h3 class="doctor"></h3>
+//     <h3 class="website"></h3>
+//     <h4 class="description"></h4>
+//     <h4 class="accepting"></h4>
+//     <h4 class="address"></h4>
+//     <h4 class="phone"></h4>
+//   </div>
+// </div>
 
 $(document).ready(function() {
   var doctor = new Doctor();
