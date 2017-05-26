@@ -19,7 +19,7 @@ Doctor.prototype.getAllSymptoms = function(displaySymptom){
 };
 
 Doctor.prototype.getDocs = function(symptom, displayDocs){
-  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${symptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=20&user_key=${apiKey}`)
+  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${symptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
     .then(function(response) {
       // response.data.forEach(function(datum){
       //   makeRow();
@@ -43,27 +43,36 @@ var displaySymptom = function(symptom){
     `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
-var makeRow = function(){
-  $('$result').append(`<div class="row"><div class="doc-info"></div></div>`);
-};
+// var makeRow = function(){
+//   $('$result').append(`<div class="row"><div class="doc-info"></div></div>`);
+// };
 
 var displayDocs = function(results){
   results.forEach(function(result){
-    $('.doc-info').last().append(
-      `<h2>${result.practices[0].name}</h2>
-      <div class="row"><div class="doc-info"></div></div>`
+    $('row').last().append(`
+      <h2 id="header">${result.practices[0].name}</h2>
+      <h3>Dr. ${result.practices[0].profile.first_name} ${result.practices[0].profile.last_name}</h3>
+      <h3>${result.practices[0].website}</h3>
+      <h4>${result.practices[0].description}</h4>
+      <h3>Accepting Patients? ${result.practices[0].accepts_new_patients}</h3>
+      <h4>Address: ${result.practices[0].visit_address.street}</h4>
+      <h4>${result.practices[0].visit_address.street2}</h4>
+      <h4>${result.practices[0].visit_address.city},
+      ${result.practices[0].visit_address.state} ${result.practices[0].visit_address.zipcode}</h4>
+      <h4>Phone: ${result.practices[0].phones[0].number}</h4>
+      <div class="row"></div>`
     );
-  })
+  });
 };
 
 
 // <div class="row"> DONE
 //   <div class="doc-info"> DONE
-//     <h2 class="practice"></h2>
-//     <h3 class="doctor"></h3>
-//     <h3 class="website"></h3>
-//     <h4 class="description"></h4>
-//     <h4 class="accepting"></h4>
+//     <h2 class="practice"></h2> DONE
+//     <h3 class="doctor"></h3> DONE
+//     <h3 class="website"></h3> DONE
+//     <h4 class="description"></h4> DONE
+//     <h4 class="accepting"></h4> DONE
 //     <h4 class="address"></h4>
 //     <h4 class="phone"></h4>
 //   </div>
