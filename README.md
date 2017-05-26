@@ -5,11 +5,11 @@ A web app for patients to enter in symptoms they are having. The website returns
 
 ###Screenshots
 
-**Main Page:**
-![Image of Homepage Screenshot](img/ss1.png)
-
-**Results Page:**
+Main Page:
 ![Image of Homepage Screenshot](img/ss2.png)
+
+Results Page:
+![Image of Homepage Screenshot](img/ss1.png)
 
 
 ### Setup/Installation Requirements
