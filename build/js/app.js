@@ -18,15 +18,10 @@ Doctor.prototype.getAllSymptoms = function(displaySymptom){
     });
 };
 
-Doctor.prototype.getDocs = function(symptom, displayDocs){
-  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${symptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
+Doctor.prototype.getDocs = function(yourSymptom, displayDocs){
+  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${yourSymptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
     .then(function(response) {
-      // response.data.forEach(function(datum){
-      //   makeRow();
-      //   displayDocs(datum.name);
-      // });
-      displayDocs(response.data);
-      console.log(response.data);
+      displayDocs(yourSymptom, response.data);
     })
     .fail(function(error) {
       $('#symptoms-form').append("No results found.");
@@ -43,40 +38,33 @@ var displaySymptom = function(symptom){
     `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
-// var makeRow = function(){
-//   $('$result').append(`<div class="row"><div class="doc-info"></div></div>`);
-// };
-
-var displayDocs = function(results){
+var displayDocs = function(yourSymptom, results){
+  $('#result').append(`
+    <h3>There are ${results.length} results for ${yourSymptom} query.<h3>
+    `);
   results.forEach(function(result){
-    $('row').last().append(`
-      <h2 id="header">${result.practices[0].name}</h2>
-      <h3>Dr. ${result.practices[0].profile.first_name} ${result.practices[0].profile.last_name}</h3>
-      <h3>${result.practices[0].website}</h3>
-      <h4>${result.practices[0].description}</h4>
-      <h3>Accepting Patients? ${result.practices[0].accepts_new_patients}</h3>
-      <h4>Address: ${result.practices[0].visit_address.street}</h4>
-      <h4>${result.practices[0].visit_address.street2}</h4>
-      <h4>${result.practices[0].visit_address.city},
-      ${result.practices[0].visit_address.state} ${result.practices[0].visit_address.zipcode}</h4>
-      <h4>Phone: ${result.practices[0].phones[0].number}</h4>
-      <div class="row"></div>`
-    );
+    var office = result.practices[0].name;
+    // var first = result.practices[0].profile.first_name;
+    // var docName = result.practices[0].profile.last_name;
+    var website = result.practices[0].website;
+    // var description = result.practices[0].description;
+    // var accept = result.practices[0].accepts_new_patients;
+    // var street = result.practices[0].visit_address.street;
+    // var street2 = result.practices[0].visit_address.street2;
+    var city = result.practices[0].visit_address.city;
+    var state = result.practices[0].visit_address.state;
+    var phone = result.practices[0].phones[0].number;
+    // var zipcode = result.practices[0].visit_address.zipcode;
+    $('#result').append(`
+      <h2>${office}</h2>
+      <h4>${city}, ${state}</h4>
+      <h4>phone: ${phone}</h4>
+      <h4>website: ${website}</h4>
+
+      `);
   });
 };
 
-
-// <div class="row"> DONE
-//   <div class="doc-info"> DONE
-//     <h2 class="practice"></h2> DONE
-//     <h3 class="doctor"></h3> DONE
-//     <h3 class="website"></h3> DONE
-//     <h4 class="description"></h4> DONE
-//     <h4 class="accepting"></h4> DONE
-//     <h4 class="address"></h4>
-//     <h4 class="phone"></h4>
-//   </div>
-// </div>
 
 $(document).ready(function() {
   var doctor = new Doctor();
