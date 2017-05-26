@@ -7,23 +7,26 @@ var apiKey = require('./../.env').apiKey;
 Doctor = function(){};
 
 Doctor.prototype.getAllSymptoms = function(displaySymptom){
-  $.get('https://api.betterdoctor.com/2016-03-01/conditions?user_key=' + apiKey).then(function(response) {
-    response.data.forEach(function(datum){
-      displaySymptom(datum.name);
+  $.get('https://api.betterdoctor.com/2016-03-01/conditions?user_key=' + apiKey)
+    .then(function(response) {
+      response.data.forEach(function(datum){
+        displaySymptom(datum.name);
+      });
+    })
+    .fail(function(error) {
+      $('#no-result').append("An Error has occurred.");
     });
-  }).fail(function(error) {
-    $('#no-result').append("An Error has occurred.");
-  });
 };
 
-Doctor.prototype.getDocs = function(){
-  $.get('https://api.betterdoctor.com/2016-03-01/conditions?user_key=' + apiKey).then(function(response) {
-    response.data.forEach(function(datum){
-      displaySymptom(datum.name);
+Doctor.prototype.getDocs = function(symptom){
+  $.get('https://api.betterdoctor.com/2016-03-01/doctors?query='+ symptom + '& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=20&user_key=' + apiKey)
+    .then(function(response) {
+        displayDocs(response.data);
+        console.log(response.data);
+      })
+    .fail(function(error) {
+      $('#symptoms-form').append("<p>An Error has occurred.</p>");
     });
-  }).fail(function(error) {
-    $('#symptoms-form').append("<p>An Error has occurred.</p>");
-  });
 };
 
 exports.doctorsModule = Doctor;
@@ -36,6 +39,15 @@ var displaySymptom = function(symptom){
     `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
+// var displayResultNum = function(num){
+//   $('#result').append(`<h4>${num} results </h4>`);
+// };
+
+var displayDocs = function(slug){
+  $('#result').append(`<h4>${slug} slug </h4>`);
+};
+
+
 
 $(document).ready(function() {
   var doctor = new Doctor();
@@ -45,16 +57,10 @@ $(document).ready(function() {
     $('form').hide();
     $('#reset-button').show();
     var yourSymptom = $('input[name=symptom]:checked').val();
-    console.log(yourSymptom)
     if (!yourSymptom){
       $('#result').text("You didn't select anything. Have another go.");
     }
-
-    // currentWeatherObject.getHumidity(city, displayHumidity);
-    // currentWeatherObject.getDescription(city, displayDescription);
-    // currentWeatherObject.getTemperatures(city, displayTemperatures);
-    // currentWeatherObject.getSunrise(city, displaySunrise);
-    // currentWeatherObject.getSunset(city, displaySunset);
+    doctor.getDocs(displayDocs);
   });
 
   $('#reset-button').click(function() {

@@ -5,6 +5,15 @@ var displaySymptom = function(symptom){
     `<label><input type="radio" name="symptom" value="${symptom}">${symptom}</label><br>`);
 };
 
+// var displayResultNum = function(num){
+//   $('#result').append(`<h4>${num} results </h4>`);
+// };
+
+var displayDocs = function(slug){
+  $('#result').append(`<h4>${slug} slug </h4>`);
+};
+
+
 
 $(document).ready(function() {
   var doctor = new Doctor();
@@ -14,16 +23,10 @@ $(document).ready(function() {
     $('form').hide();
     $('#reset-button').show();
     var yourSymptom = $('input[name=symptom]:checked').val();
-    console.log(yourSymptom)
     if (!yourSymptom){
       $('#result').text("You didn't select anything. Have another go.");
     }
-
-    // currentWeatherObject.getHumidity(city, displayHumidity);
-    // currentWeatherObject.getDescription(city, displayDescription);
-    // currentWeatherObject.getTemperatures(city, displayTemperatures);
-    // currentWeatherObject.getSunrise(city, displaySunrise);
-    // currentWeatherObject.getSunset(city, displaySunset);
+    doctor.getDocs(displayDocs);
   });
 
   $('#reset-button').click(function() {
