@@ -3,12 +3,12 @@
 A web app for patients to enter in symptoms they are having. The website returns a list of nearby physicians to treat their ailments.
 
 
-###Screenshots
+## Screenshots
 
-Main Page:
+### Main Page:
 ![Image of Homepage Screenshot](img/ss2.png)
 
-Results Page:
+### Results Page:
 ![Image of Homepage Screenshot](img/ss1.png)
 
 
