@@ -7,7 +7,7 @@ var displaySymptom = function(symptom){
 
 var displayDocs = function(yourSymptom, results){
   $('#result').append(`
-    <h3>There are ${results.length} results for ${yourSymptom} query.<h3>
+    <h3>There are ${results.length} results for ${yourSymptom} query within 100 miles of your query.<h3>
     `);
   results.forEach(function(result){
     var office = result.practices[0].name;
@@ -40,11 +40,16 @@ $(document).ready(function() {
   $('#submit-button').click(function() {
     $('form').hide();
     $('#reset-button').show();
+    var yourLat = parseFloat($('#latitude').val());
+    var yourLong = parseFloat($('#longitude').val());
     var yourSymptom = $('input[name=symptom]:checked').val();
     if (!yourSymptom){
       $('#result').text("You didn't select anything. Have another go.");
     }
-    doctor.getDocs(yourSymptom, displayDocs);
+    if (!yourLat || !yourLong || yourLat.match(/[a-z]/i) || yourLong.match(/[a-z]/i){
+      $('#result').text("You didn't enter valid latitude/longitude coordinates. Have another go.");
+    }
+    doctor.getDocs(yourSymptom, yourLat, yourLong, displayDocs);
   });
 
   $('#reset-button').click(function() {

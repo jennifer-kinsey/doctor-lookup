@@ -14,8 +14,8 @@ Doctor.prototype.getAllSymptoms = function(displaySymptom){
     });
 };
 
-Doctor.prototype.getDocs = function(yourSymptom, displayDocs){
-  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${yourSymptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
+Doctor.prototype.getDocs = function(yourSymptom, yourLat, yourLong, displayDocs){
+  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${yourSymptom}& location=${yourLat},${yourLong},100&user_location=${yourLat},${yourLong}&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
     .then(function(response) {
       displayDocs(yourSymptom, response.data);
     })

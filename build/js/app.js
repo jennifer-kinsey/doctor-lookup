@@ -18,8 +18,8 @@ Doctor.prototype.getAllSymptoms = function(displaySymptom){
     });
 };
 
-Doctor.prototype.getDocs = function(yourSymptom, displayDocs){
-  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${yourSymptom}& location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
+Doctor.prototype.getDocs = function(yourSymptom, yourLat, yourLong, displayDocs){
+  $.get(`https://api.betterdoctor.com/2016-03-01/doctors?query=${yourSymptom}& location=${yourLat},${yourLong},100&user_location=${yourLat},${yourLong}&sort=rating-desc&skip=0&limit=10&user_key=${apiKey}`)
     .then(function(response) {
       displayDocs(yourSymptom, response.data);
     })
@@ -40,7 +40,7 @@ var displaySymptom = function(symptom){
 
 var displayDocs = function(yourSymptom, results){
   $('#result').append(`
-    <h3>There are ${results.length} results for ${yourSymptom} query.<h3>
+    <h3>There are ${results.length} results for ${yourSymptom} query within 100 miles of your query.<h3>
     `);
   results.forEach(function(result){
     var office = result.practices[0].name;
@@ -73,11 +73,16 @@ $(document).ready(function() {
   $('#submit-button').click(function() {
     $('form').hide();
     $('#reset-button').show();
+    var yourLat = parseFloat($('#latitude').val());
+    var yourLong = parseFloat($('#longitude').val());
     var yourSymptom = $('input[name=symptom]:checked').val();
     if (!yourSymptom){
       $('#result').text("You didn't select anything. Have another go.");
     }
-    doctor.getDocs(yourSymptom, displayDocs);
+    if (!yourLat || !yourLong){
+      $('#result').text("You didn't enter valid latitude/longitude coordinates. Have another go.");
+    }
+    doctor.getDocs(yourSymptom, yourLat, yourLong, displayDocs);
   });
 
   $('#reset-button').click(function() {
