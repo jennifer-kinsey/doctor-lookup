@@ -6,21 +6,22 @@ var displaySymptom = function(symptom){
 };
 
 var displayDocs = function(yourSymptom, results){
+  console.log(results);
   $('#result').append(`
     <h3>There are ${results.length} results for ${yourSymptom} query within 100 miles of your query.<h3>
     `);
   results.forEach(function(result){
-    var office = result.practices[0].name;
+    var office = result.practices[0].name || "unavailable";
     // var first = result.practices[0].profile.first_name;
     // var docName = result.practices[0].profile.last_name;
-    var website = result.practices[0].website;
+    var website = result.practices[0].website || "unavailable";
     // var description = result.practices[0].description;
     // var accept = result.practices[0].accepts_new_patients;
     // var street = result.practices[0].visit_address.street;
     // var street2 = result.practices[0].visit_address.street2;
-    var city = result.practices[0].visit_address.city;
-    var state = result.practices[0].visit_address.state;
-    var phone = result.practices[0].phones[0].number;
+    var city = result.practices[0].visit_address.city || "unavailable";
+    var state = result.practices[0].visit_address.state || "unavailable";
+    var phone = result.practices[0].phones[0].number || "unavailable";
     // var zipcode = result.practices[0].visit_address.zipcode;
     $('#result').append(`
       <h2>${office}</h2>
@@ -46,8 +47,8 @@ $(document).ready(function() {
     if (!yourSymptom){
       $('#result').text("You didn't select anything. Have another go.");
     }
-    if (!yourLat || !yourLong || yourLat.match(/[a-z]/i) || yourLong.match(/[a-z]/i){
-      $('#result').text("You didn't enter valid latitude/longitude coordinates. Have another go.");
+    if (!yourLat || !yourLong){
+      $('#result').text("You didn't enter a latitude and/or longitude. Have another go.");
     }
     doctor.getDocs(yourSymptom, yourLat, yourLong, displayDocs);
   });

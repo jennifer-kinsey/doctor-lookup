@@ -40,7 +40,14 @@ $ gulp serve
 ```
 
 ### Known Bugs
-The information returned back for the doctor results was limited to name, website, city, state, and phone. There was an issue in the way the data was being expected for other categories. Eg - if you were requesting the last name of the physician and it didn't exist, an error occurred on load. There were several key/value pairs not available for all entries. With lack of workaround, this author decided to limit what data was pulled to avoid not missing results.
+The data in this API isn't complete. There isn't always, for example, a practice name. The workaround is using the js OR operator to fill in blanks.
+```
+var office = result.practices[0].name || "unavailable";
+```
+
+Additionally, the entire practice part of the json file may not exist.
+
+As a result, Sometimes the results for the doctor query will say there are 10 results and only 4 present on the page due to data not being available in the API.
 
 
 ### Technologies Used
@@ -65,4 +72,4 @@ Copyright © 2017 Jennifer Kinsey
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
